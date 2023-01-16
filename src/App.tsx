@@ -1,34 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
+import {
+  AspectRatio,
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
+
+function Screen({ screenStatus }: { screenStatus: string }) {
+  if (screenStatus === "video") {
+    return (
+      <Box width="100%" height="100vh" position="fixed" top="0">
+        <AspectRatio ratio={1} h="100%">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/9aS-EgdAq6U?controls=0&autoplay=1"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="autoplay"
+            // allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+        </AspectRatio>
+      </Box>
+    );
+  }
+
+  return (
+    <Box width="100%" height="100vh" position="fixed" top="0">
+      <Image src="https://i.blogs.es/9f8810/monster/840_560.jpeg" />
+    </Box>
+  );
+}
+
+type VideoStatus = "video" | "image";
 function App() {
-  const [count, setCount] = useState(0)
+  const [screenStatus, setScreenStatus] = useState<VideoStatus>("video");
+  const handleSetStatus = () => {
+    setScreenStatus("image");
+  };
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Screen screenStatus={screenStatus} />
+      <Box
+        display="flex"
+        alignItems="flex-end"
+        left="0"
+        justifyContent="flex-end"
+        width="100%"
+        position="fixed"
+        bottom="0"
+      >
+        <Button
+          backgroundColor="#A0AEBF"
+          mr="10px"
+          color="#fff"
+
+          width={{
+            sm: "60px",
+            md: "100px",
+            lg: "200px",
+          }}
+        >
+          Ver creditos
+        </Button>
+        <Button
+          leftIcon={<ArrowForwardIcon />}
+          backgroundColor="#7E8877"
+          mr="10px"
+          width={{
+            sm: "100px",
+            md: "200px",
+            lg: "400px",
+          }}
+          onClick={(event) => handleSetStatus()}
+        >
+          Siguiente episodio
+        </Button>
+      </Box>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
