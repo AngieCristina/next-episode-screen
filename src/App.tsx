@@ -4,6 +4,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 import {
   AspectRatio,
+  background,
   Box,
   Button,
   ButtonGroup,
@@ -11,8 +12,17 @@ import {
   Heading,
   IconButton,
   Image,
+  keyframes,
 } from "@chakra-ui/react";
 
+const changeBackground = keyframes`
+ 0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+`;
 function Screen({ screenStatus }: { screenStatus: string }) {
   if (screenStatus === "video") {
     return (
@@ -21,11 +31,10 @@ function Screen({ screenStatus }: { screenStatus: string }) {
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/9aS-EgdAq6U?controls=0&autoplay=1"
+            src="https://www.youtube.com/embed/9aS-EgdAq6U?controls=0&autoplay=1&mute=1"
             title="YouTube video player"
             frameBorder="0"
             allow="autoplay"
-            // allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
         </AspectRatio>
@@ -35,7 +44,11 @@ function Screen({ screenStatus }: { screenStatus: string }) {
 
   return (
     <Box width="100%" height="100vh" position="fixed" top="0">
-      <Image src="https://i.blogs.es/9f8810/monster/840_560.jpeg" />
+      <Image
+        src="https://i.blogs.es/9f8810/monster/840_560.jpeg"
+        h="100%"
+        w="100%"
+      />
     </Box>
   );
 }
@@ -43,8 +56,11 @@ function Screen({ screenStatus }: { screenStatus: string }) {
 type VideoStatus = "video" | "image";
 function App() {
   const [screenStatus, setScreenStatus] = useState<VideoStatus>("video");
+  const [creditStatus, setCreditStatus] = useState(true);
+
   const handleSetStatus = () => {
     setScreenStatus("image");
+    setCreditStatus(false);
   };
 
   return (
@@ -59,32 +75,48 @@ function App() {
         position="fixed"
         bottom="0"
       >
-        <Button
-          backgroundColor="#A0AEBF"
-          mr="10px"
-          color="#fff"
-
-          width={{
-            sm: "60px",
-            md: "100px",
-            lg: "200px",
-          }}
-        >
-          Ver creditos
-        </Button>
-        <Button
-          leftIcon={<ArrowForwardIcon />}
-          backgroundColor="#7E8877"
-          mr="10px"
-          width={{
-            sm: "100px",
-            md: "200px",
-            lg: "400px",
-          }}
-          onClick={(event) => handleSetStatus()}
-        >
-          Siguiente episodio
-        </Button>
+        {creditStatus && (
+          <Button
+            backgroundColor="#4D4D4D"
+            fontSize="16px"
+            letterSpacing="0.2em"
+            fontWeight="bold"
+            mr="10px"
+            color="#fff"
+            width={{
+              sm: "60px",
+              md: "120px",
+              lg: "200px",
+            }}
+            onClick={() => setCreditStatus(!creditStatus)}
+          > p
+            Watch Credits
+          </Button>
+        )}
+        {creditStatus && (
+          <Button
+            leftIcon={<ArrowForwardIcon />}
+            mr="10px"
+            borderRadius="4px"
+            fontWeight="bold"
+            fontSize="16px"
+            letterSpacing="0.2em"
+            width={{
+              sm: "120px",
+              md: "200px",
+              lg: "300px",
+            }}
+            padding="5px 12px"
+            boxShadow="0 3px 10px rgba(0, 0, 0, 0.2)"
+            background="linear-gradient(to right, white 50%, gray 50%)"
+            backgroundSize="200% 100%"
+            backgroundPosition="100% 0%"
+            animation={`${changeBackground} 3s linear`}
+            onClick={(event) => handleSetStatus()}
+          >
+            Next Episode
+          </Button>
+        )}
       </Box>
     </div>
   );
